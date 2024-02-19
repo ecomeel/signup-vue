@@ -1,0 +1,15 @@
+@import "./reset";
+body,
+html {
+  font-family: "Fira Code";
+  background-color: #242424;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 30px 20px;
+  max-width: 800px;
+}
