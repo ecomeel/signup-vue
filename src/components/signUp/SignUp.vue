@@ -1,6 +1,4 @@
 <script>
-// import Input from "../input/Input.vue";
-// import AboutPerson from "../aboutPerson/AboutPerson.vue";
 export default {
   data() {
     return {
@@ -59,12 +57,46 @@ export default {
           value: "Chernishova",
         },
       ],
+      docTypes: [
+        {
+          label: "Паспорт",
+          value: "passport",
+        },
+        {
+          label: "Свидетельство о рождении",
+          value: "birth certificate",
+        },
+        {
+          label: "Вод. удостоверение",
+          value: "driver's license",
+        },
+      ],
     };
+  },
+  methods: {
+    onSubmit(event) {
+      event.preventDefault();
+      console.log("submit");
+      const requiredFields = {
+        name: this.about.name,
+        surname: this.about.surname,
+        birthday: this.about.birthDay,
+        phone: this.about.phone,
+        clientGroup: this.about.clientGroup,
+        city: this.address.city,
+        docType: this.passport.type,
+        whenIssued: this.passport.whenIssued,
+      };
+      for (const field in requiredFields) {
+
+      }
+
+    },
   },
 };
 </script>
 <template>
-  <form class="form">
+  <form class="form" @submit="onSubmit">
     <div class="bio">
       <input
         class="input"
@@ -189,9 +221,9 @@ export default {
       <h3 class="passport__title">Паспортные данные</h3>
       <select v-model="passport.type" class="passport__type-selector">
         <option value="*" disabled>*</option>
-        <option value="passport">Паспорт</option>
-        <option value="birth certificate">Свидетельство о рождении</option>
-        <option value="driver's license">Вод. удостоверение</option>
+        <option v-for="(type, index) in docTypes" :value="type.value">
+          {{ type.label }}
+        </option>
       </select>
       <div class="passport__number-wrapper">
         <input
@@ -208,18 +240,19 @@ export default {
         />
       </div>
       <input
-        v-model="whoIssued"
+        v-model="passport.whoIssued"
         type="text"
         placeholder="Кем выдан?"
         class="input"
       />
       <input
-        v-model="whenIssued"
+        v-model="passport.whenIssued"
         type="text"
         placeholder="Когда выдан? *"
         class="input"
       />
     </div>
+    <button class="form__submit-btn" type="submit">Отправить</button>
   </form>
 </template>
 <style scoped lang="scss">
@@ -228,6 +261,22 @@ export default {
 
   & > * {
     margin-bottom: 20px;
+  }
+
+  &__submit-btn {
+    padding: 15px 30px;
+    background-color: #42609b;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    transition: linear 0.2s;
+
+    &:hover {
+      padding-left: 50px;
+      padding-right: 50px;
+      opacity: 0.7;
+    }
   }
 }
 .input {
@@ -418,7 +467,7 @@ export default {
       left: 2px;
       z-index: 4;
 
-      transition: opacity 0.5s ease-in;
+      transition: opacity 0.3s ease-in;
     }
   }
 
