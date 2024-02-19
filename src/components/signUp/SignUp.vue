@@ -12,8 +12,23 @@ export default {
         phone: "",
         sex: "male",
         clientGroup: [],
-        doctor: "",
+        doctor: "-",
         agreeGetMessages: true,
+      },
+      address: {
+        index: "",
+        country: "",
+        region: "",
+        city: "",
+        street: "",
+        house: "",
+      },
+      passport: {
+        type: "*",
+        seria: "",
+        number: "",
+        whoIssued: "",
+        whenIssued: "",
       },
 
       clientGroups: [
@@ -54,13 +69,13 @@ export default {
       <input
         class="input"
         v-model.trim="about.name"
-        placeholder="Имя"
+        placeholder="Имя *"
         type="text"
       />
       <input
         class="input"
         v-model.trim="about.surname"
-        placeholder="Фамилия"
+        placeholder="Фамилия *"
         type="text"
       />
       <input
@@ -72,13 +87,13 @@ export default {
       <input
         class="input"
         v-model.trim="about.birthDay"
-        placeholder="Дата рождения"
+        placeholder="Дата рождения *"
         type=""
       />
       <input
         class="input"
         v-model.trim="about.phone"
-        placeholder="Номер телефона"
+        placeholder="Номер телефона *"
         type="tel"
       />
       <div class="sex">
@@ -91,9 +106,8 @@ export default {
           <input v-model="about.sex" name="sex" type="radio" value="female" />
         </label>
       </div>
-
       <div class="group">
-        <h3>Выберите группу клиента:</h3>
+        <h3>Выберите группу клиента *</h3>
         <select class="client-group" v-model="about.clientGroup" multiple>
           <label>Группа клиентов</label>
           <option
@@ -108,6 +122,7 @@ export default {
       <div class="doctor">
         <h3 class="doctor__title">Выберите специалиста:</h3>
         <select class="doctor__selector" v-model="about.doctor">
+          <option value="-" disabled>-</option>
           <option
             v-for="(doctor, index) in doctors"
             :key="index"
@@ -122,28 +137,88 @@ export default {
           type="checkbox"
           v-model="about.agreeGetMessages"
           class="checkbox__input"
+          id="checkbox"
         />
-        <label class="checkbox__label">Желаете получать СМС уведомления?</label>
+        <label for="checkbox" class="checkbox__label"
+          >Желаете получать СМС уведомления?</label
+        >
       </div>
     </div>
     <div class="address">
       <h2 class="address__title">Адресс</h2>
       <div class="address__inputs">
-        <input type="text" placeholder="Индекс" class="input" />
-        <input type="text" placeholder="Страна" class="input" />
-        <input type="text" placeholder="Область" class="input" />
-        <input type="text" placeholder="Город" class="input" />
-        <input type="text" placeholder="Улица" class="input" />
-        <input type="text" placeholder="Дом" class="input" />
+        <input
+          v-model="address.index"
+          type="text"
+          placeholder="Индекс"
+          class="input"
+        />
+        <input
+          v-model="address.country"
+          type="text"
+          placeholder="Страна"
+          class="input"
+        />
+        <input
+          v-model="address.region"
+          type="text"
+          placeholder="Область"
+          class="input"
+        />
+        <input
+          v-model="address.city"
+          type="text"
+          placeholder="Город *"
+          class="input"
+        />
+        <input
+          v-model="address.street"
+          type="text"
+          placeholder="Улица"
+          class="input"
+        />
+        <input
+          v-model="address.house"
+          type="text"
+          placeholder="Дом"
+          class="input"
+        />
       </div>
     </div>
     <div class="passport">
       <h3 class="passport__title">Паспортные данные</h3>
-      <select class="passport__type-selector">
-        <option value="">Паспорт</option>
-        <option value="">Свидетельство о рождении</option>
-        <option value="">Вод. удостоверение</option>
+      <select v-model="passport.type" class="passport__type-selector">
+        <option value="*" disabled>*</option>
+        <option value="passport">Паспорт</option>
+        <option value="birth certificate">Свидетельство о рождении</option>
+        <option value="driver's license">Вод. удостоверение</option>
       </select>
+      <div class="passport__number-wrapper">
+        <input
+          v-model="passport.seria"
+          type="number"
+          class="input"
+          placeholder="Серия"
+        />
+        <input
+          v-model="passport.number"
+          type="number"
+          class="input"
+          placeholder="Номер"
+        />
+      </div>
+      <input
+        v-model="whoIssued"
+        type="text"
+        placeholder="Кем выдан?"
+        class="input"
+      />
+      <input
+        v-model="whenIssued"
+        type="text"
+        placeholder="Когда выдан? *"
+        class="input"
+      />
     </div>
   </form>
 </template>
@@ -169,17 +244,18 @@ export default {
   }
 }
 .doctor {
-  // display: flex;
   &__title {
     font-size: 18px;
   }
   &__selector {
     margin-top: 20px;
-    padding: 5px;
+    padding: 10px;
     width: 80%;
     background-color: transparent;
     color: #fff;
     font-size: 18px;
+    border: 1px solid #3d3d3d;
+    border-radius: 4px;
 
     &:focus {
       outline: #4b72c2;
@@ -193,12 +269,12 @@ export default {
 }
 .client-group {
   margin-top: 20px;
-  padding: 10px;
+  padding: 10px 10px 0 10px;
   width: 100%;
   font-size: 16px;
   line-height: 20px;
   background-color: transparent;
-  color: #fff;
+  color: #7f7f7f;
   border: 1px solid #3d3d3d;
 
   &:focus {
@@ -209,7 +285,8 @@ export default {
     margin-bottom: 10px;
   }
   & > * {
-    font-size: 20px;
+    padding: 5px 10px;
+    font-size: 18px;
     &:checked {
       background-color: #8b8b8b;
       border-radius: 3px;
@@ -246,12 +323,40 @@ export default {
 }
 .passport {
   margin-top: 30px;
+
+  & > *:not(:first-child) {
+    margin-top: 20px;
+  }
   &__title {
     font-size: 25px;
     font-weight: 700;
   }
   &__type-selector {
+    margin-top: 20px;
+    padding: 10px;
+    width: 80%;
+    background-color: transparent;
+    color: #fff;
+    font-size: 18px;
+    border: 1px solid #3d3d3d;
+    border-radius: 4px;
 
+    &:focus {
+      outline: #4b72c2;
+    }
+  }
+  &__number-wrapper {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+
+    & > * {
+      flex: 1 0 45%;
+    }
+  }
+  & > input {
+    display: block;
+    width: 100%;
   }
 }
 .checkbox {
@@ -259,8 +364,8 @@ export default {
   &__input {
     -webkit-appearance: none;
     appearance: none;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     position: absolute;
     top: -4px;
     z-index: 10;
@@ -269,8 +374,8 @@ export default {
 
   &__label {
     padding-left: 40px;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     color: #7f7f7f;
     cursor: pointer;
 
@@ -280,8 +385,8 @@ export default {
       margin-top: -5px;
       content: "";
       display: block;
-      width: 30px;
-      height: 30px;
+      width: 25px;
+      height: 25px;
       border: 1px solid #3d3d3d;
 
       border-radius: 4px;
@@ -300,16 +405,16 @@ export default {
       margin-top: -7px;
       content: "";
       display: block;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
 
       background: url("/src/assets/checked-checkbox.png") no-repeat;
       background-size: cover;
-      background-size: 28px 28px;
+      background-size: 20px 20px;
       opacity: 0;
 
       position: absolute;
-      top: 2px;
+      top: 4px;
       left: 2px;
       z-index: 4;
 
@@ -328,5 +433,11 @@ export default {
   &__input:checked + &__label::after {
     opacity: 1 !important;
   }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 </style>
