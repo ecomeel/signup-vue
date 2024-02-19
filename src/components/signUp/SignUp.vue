@@ -126,7 +126,6 @@ export default {
         <label class="checkbox__label">Желаете получать СМС уведомления?</label>
       </div>
     </div>
-
     <div class="address">
       <h2 class="address__title">Адресс</h2>
       <div class="address__inputs">
@@ -137,6 +136,14 @@ export default {
         <input type="text" placeholder="Улица" class="input" />
         <input type="text" placeholder="Дом" class="input" />
       </div>
+    </div>
+    <div class="passport">
+      <h3 class="passport__title">Паспортные данные</h3>
+      <select class="passport__type-selector">
+        <option value="">Паспорт</option>
+        <option value="">Свидетельство о рождении</option>
+        <option value="">Вод. удостоверение</option>
+      </select>
     </div>
   </form>
 </template>
@@ -228,6 +235,23 @@ export default {
   }
   &__inputs {
     margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+
+    & > * {
+      flex: 1 0 48%;
+    }
+  }
+}
+.passport {
+  margin-top: 30px;
+  &__title {
+    font-size: 25px;
+    font-weight: 700;
+  }
+  &__type-selector {
+
   }
 }
 .checkbox {
