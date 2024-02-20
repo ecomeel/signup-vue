@@ -359,6 +359,12 @@ export default {
     font-size: 18px;
   }
 }
+.sex {
+  // @media (max-width: 500px) {
+  //   display: flex;
+  //   flex-direction: column;
+  // }
+}
 .client-group {
   margin-top: 20px;
   padding: 10px 10px 0 10px;
@@ -392,8 +398,16 @@ export default {
   gap: 30px;
   // flex-direction: column;
 
+  @media (max-width: 530px) {
+    gap: 15px;
+  }
+
   & > * {
     flex: 1 1 45%;
+
+    @media (max-width: 530px) {
+      flex: 1 0 100%;
+    }
   }
 }
 .address {
@@ -407,6 +421,10 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
+
+    @media (max-width: 530px) {
+      gap: 15px;
+    }
 
     & > * {
       flex: 1 0 48%;
@@ -442,6 +460,10 @@ export default {
     display: flex;
     gap: 15px;
 
+    @media (max-width: 530px) {
+      flex-direction: column;
+    }
+
     & > * {
       flex: 1 0 45%;
     }
@@ -472,6 +494,11 @@ export default {
     cursor: pointer;
 
     transition: color 0.5s ease-in;
+
+    @media (max-width: 530px) {
+      display: block;
+      width: 100% !important;
+    }
 
     &::before {
       margin-top: -5px;

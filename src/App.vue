@@ -23,7 +23,3 @@ import SignUp from "./components/signUp/SignUp.vue";
   color: #7f7f7f;
 }
 </style>
-
-<!-- #7f7f7f gray color -->
-<!-- #4B72C2 lbue color -->
-<!-- #3d3d3d border color -->
