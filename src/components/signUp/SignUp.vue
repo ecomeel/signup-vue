@@ -74,23 +74,60 @@ export default {
     };
   },
   methods: {
+    clearOldErrors(fields) {
+      fields.forEach((field) => {
+        field.classList.remove("error-field");
+      });
+    },
+    validationEmptyFields(fields) {
+      let isThereEmptyFields = false;
+      fields.forEach((field) => {
+        if (!field.value || field.value == "*") {
+          field.classList.add("error-field");
+          isThereEmptyFields = true;
+        }
+      });
+      if (isThereEmptyFields) {
+        alert("Заполните обязательные поля!");
+        return false;
+      } else {
+        return true;
+      }
+    },
+    validationPhoneNumber(phone) {
+      const phoneNumberNode = document.getElementById("phoneNumber");
+      let noError = true;
+      if (phone[0] == "+") {
+        phone = phone.slice(1);
+      }
+      if (phone[0] != 7) {
+        noError = false;
+      }
+      if (phone.length != 11) {
+        noError = false;
+      }
+      if (!noError) {
+        phoneNumberNode.classList.add("error-field");
+        alert(
+          "Некорректный номер телефона. Попробуйте еще раз. Номер должен начинаться с цифры 7 и иметь 11 символов!"
+        );
+        phoneNumberNode.value = "";
+      }
+      return noError;
+    },
     onSubmit(event) {
       event.preventDefault();
-      console.log("submit");
-      const requiredFields = {
-        name: this.about.name,
-        surname: this.about.surname,
-        birthday: this.about.birthDay,
-        phone: this.about.phone,
-        clientGroup: this.about.clientGroup,
-        city: this.address.city,
-        docType: this.passport.type,
-        whenIssued: this.passport.whenIssued,
-      };
-      for (const field in requiredFields) {
+      const requiredFieldsNodes = document.querySelectorAll(".required");
 
+      this.clearOldErrors(requiredFieldsNodes);
+
+      if (!this.validationEmptyFields(requiredFieldsNodes)) {
+        return;
       }
-
+      if (!this.validationPhoneNumber(this.about.phone)) {
+        return;
+      }
+      alert("Вы успешно прошли регистрацию! Добро пожаловать!");
     },
   },
 };
@@ -99,13 +136,15 @@ export default {
   <form class="form" @submit="onSubmit">
     <div class="bio">
       <input
-        class="input"
+        id="name"
+        class="input required"
         v-model.trim="about.name"
         placeholder="Имя *"
         type="text"
       />
       <input
-        class="input"
+        id="surname"
+        class="input required"
         v-model.trim="about.surname"
         placeholder="Фамилия *"
         type="text"
@@ -117,13 +156,14 @@ export default {
         type="text"
       />
       <input
-        class="input"
+        class="input required"
         v-model.trim="about.birthDay"
         placeholder="Дата рождения *"
         type=""
       />
       <input
-        class="input"
+        id="phoneNumber"
+        class="input required"
         v-model.trim="about.phone"
         placeholder="Номер телефона *"
         type="tel"
@@ -140,8 +180,11 @@ export default {
       </div>
       <div class="group">
         <h3>Выберите группу клиента *</h3>
-        <select class="client-group" v-model="about.clientGroup" multiple>
-          <label>Группа клиентов</label>
+        <select
+          class="client-group required"
+          v-model="about.clientGroup"
+          multiple
+        >
           <option
             v-for="(group, index) in clientGroups"
             :key="index"
@@ -201,7 +244,7 @@ export default {
           v-model="address.city"
           type="text"
           placeholder="Город *"
-          class="input"
+          class="input required"
         />
         <input
           v-model="address.street"
@@ -219,7 +262,7 @@ export default {
     </div>
     <div class="passport">
       <h3 class="passport__title">Паспортные данные</h3>
-      <select v-model="passport.type" class="passport__type-selector">
+      <select v-model="passport.type" class="passport__type-selector required">
         <option value="*" disabled>*</option>
         <option v-for="(type, index) in docTypes" :value="type.value">
           {{ type.label }}
@@ -249,10 +292,10 @@ export default {
         v-model="passport.whenIssued"
         type="text"
         placeholder="Когда выдан? *"
-        class="input"
+        class="input required"
       />
     </div>
-    <button class="form__submit-btn" type="submit">Отправить</button>
+    <button class="form__submit-btn" type="submit">Зарегистрироваться</button>
   </form>
 </template>
 <style scoped lang="scss">
@@ -264,7 +307,7 @@ export default {
   }
 
   &__submit-btn {
-    padding: 15px 30px;
+    padding: 21px 40px;
     background-color: #42609b;
     border: none;
     border-radius: 5px;
@@ -273,8 +316,8 @@ export default {
     transition: linear 0.2s;
 
     &:hover {
-      padding-left: 50px;
-      padding-right: 50px;
+      padding-left: 60px;
+      padding-right: 60px;
       opacity: 0.7;
     }
   }
