@@ -359,12 +359,6 @@ export default {
     font-size: 18px;
   }
 }
-.sex {
-  // @media (max-width: 500px) {
-  //   display: flex;
-  //   flex-direction: column;
-  // }
-}
 .client-group {
   margin-top: 20px;
   padding: 10px 10px 0 10px;
